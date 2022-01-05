@@ -2,10 +2,10 @@
 Model Evaluation (Model Değerlendirmesi) 
 mAP(mean average precision)
 AP(average precision)
-intersection over union(iou)
+Intersection Over Union(iou)
 Recall
 Precision
-f1 score
+F1 Score
 
 '''
 
