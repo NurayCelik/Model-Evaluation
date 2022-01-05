@@ -68,16 +68,6 @@ def mean_average_precision(detection_List = []):
 # Eger bir ground truth var detection yok ise False Negative (FN)
 # Eger bir detection var ground truth yok ise yine TN
 # =============================================================================   
-# =============================================================================
-# mAP = AVG(AP for each object class)
-# AP = AVG(Precision for each of 11 Recalls {precision = 0, 0.1, ..., 1})
-# PR-curve = Precision and Recall (for each Threshold that is in the Predictions bound-boxes)
-# Precision = TP / (TP + FP)
-# Recall = TP / (TP + FN)
-# TP = number of detections with IoU>=0.5
-# FP = number of detections with IoU<0.5 or detected more than once
-# FN = number of objects that not detected or detected with IoU<0.5
-# =============================================================================
 
 
     TP=[0,0,0,0,0,0]
@@ -91,10 +81,10 @@ def mean_average_precision(detection_List = []):
     '''
     -> mAP i hesaplamak için ön işlemler için mean_average_precision fonksiyonu yazıldı. 
     -> Parametre olarak detection_List alındı, output olarak da 
-    addMapList fonksiyonuna i, precision, recall,F1_score verileri gönderildi.
+    addMapList fonksiyonuna i, precision, recall, F1_score verileri gönderildi.
     
     -> mean_average_precision fonksiyonun çalışması:
-    detection_List den gelen iou değeri, predict(detect image) labelid ve ground truth labelid değerleri kıyaslanarak
+    detection_List den gelen iou değeri, predict(detect image) labelid(class id) ve ground truth labelid değerleri kıyaslanarak
     TP, FP, FN hesaplandı. Bunun için class(label) -> (labels = ["cizik","gocuk", "ezilme","bukulme","boyahatasi","surtme"]) 
     sayısı kadar indise sahip TP, FP, TN, FN dizileri oluşturuldu.
     Bu örneğin TP dizisinde her bir indis class id yi temsil ediyor. 
@@ -200,7 +190,7 @@ def showMAP(mAPList=[]):
     alarak çağırdiğimizda çalışan bir fonksiyom.
     
     addMapList fonksiyonu mAPList dizisini (i, precision, recall,F1_score => i= classId ) değerleri her bir image detection ından sonra diziye kaydediyor.
-    showMAP fonksiyonu bütüm imageler detection edildikten sonra çağırılıyor. Bütün her bir image e ait classid, precision, recall,F1_score değerleri artık elimizde.
+    showMAP fonksiyonu bütüm imageler detection edildikten sonra çağırılıyor. Bütün her bir image e ait classid, precision, recall, F1_score değerleri artık elimizde.
     
     sumRecall, sumPrecis, sum_F1_Score dizileri yine classların indexi boyutunda oluşturuldu.
     mAPList dizisinin boyutunda döngü oluşturuldu.
@@ -377,15 +367,15 @@ def showHistogram(histList = []):
 def intersection_over_union(box1, box2): 
     '''
     -> intersection_over_union fonksiyonu, nesne dedektörünün doğruluğunu ölçmek için kullanılan 
-    bir değerlendirme metriğidir. ground-truth bounding boxes ( nesnemizin görüntüde nerede olduğunu 
+    bir değerlendirme metriğidir. ground-truth bounding boxes (nesnemizin görüntüde nerede olduğunu 
     belirten test kümesinden hazır olarak bulunan (burada herbir image için verileri txt dosyasında bulunan) 
     sınırlayıcı kutular) ve predicted bounding boxes; objec detectiondan tahmin edilen sınırlayıcı 
-    kutular(predicted bounding boxes).
-    Bu iki sınırlayıcı kutuya sahip olduğumuz sürece, intersection over union(iou) uygulayabiliriz.
-    iou değeri, bu iki kutuya ait karelerin kesişiminin iki karenin birleşiminden oluşan alana bölünerek elde edilir.
-    -> intersection_over_union(box1, box2),  imageLabelling fonksiyonu içerisinden çağırıliyor.Paramtre olarak
+    kutular(predicted bounding boxes). Bu iki sınırlayıcı kutuya sahip olduğumuz sürece, intersection over union(iou) uygulayabiliriz.
+    
+    -> intersection_over_union(box1, box2),  imageLabelling fonksiyonu içerisinden çağırıliyor.Parametre olarak
     ground-truth bounding boxes için box1 ve predicted bounding boxes için box2 iki diziyi alır. 
-    Outpu olarak iou sonucun döndürür.
+    Output olarak iou sonucunu döndürür.
+    
     boxA = (tr_start_x,tr_start_y,tr_end_x,tr_end_y) iki diziyi çalıştırır.
     detection sonucudan elde edilen  boxB = (start_x, start_y, end_x, end_y)
     box1 ve box2 dizisi değişkenlere atandı.
@@ -393,7 +383,7 @@ def intersection_over_union(box1, box2):
     geniş dikdörtgenin genişliği ve yüksekiğini hesaplamak için mutlak değeri alındı
     negatif sonuçları önledik
     box1 ve box2 için iki dikdörtgenin alanı hesaplandı
-    Geniş dikdörgenden, iki dikdörgen çıkarıldı kesişimi hesaplamak için
+    Geniş dikdörgenden, iki dikdörgenden çıkarıldı kesişimi hesaplamak için
     iou değeri blundu
     
     '''
@@ -468,16 +458,13 @@ def detectionFile(img):
     detection_layers = model.forward(output_layer)
     
     
-    ############## NON-MAXIMUM SUPPRESSION - OPERATION 1 ###################
-    
     ids_list = []
     boxes_list = []
     confidences_list = []
     bounding_box = []
     bounding = []
     
-    ############################ END OF OPERATION 1 ########################
-    
+  
     
     for detection_layer in detection_layers:
         for object_detection in detection_layer:
@@ -537,6 +524,7 @@ def getGroundTruthVal(filename):
 
     -> getGroundTruthVal fonksiyonu, imageLabelling fonksiyonun içerisinden çağırılan 
     ve filename parametresi alan bir fonksiyondur. Output olarak truthBox dizisini üretir
+    ground-truth bounding boxes verilerini txt dosyasından alır ve truthBox dizisine ekler.
     ----------
     -> getGroundTruthVal fonksiyonu dosyayı okuyup her satır için diziyi truthBoxa kaydeder. 
     -------
@@ -564,7 +552,7 @@ def imageLabelling(image_file_path):
     
 
     imageLabelling fonksiyonu işlemleri gerçekleştiren ana fonksiyondur.
-    Her bir image e ait dosyayı alır ve çalışırır
+    Her bir image e ait dosyayı alır ve çalıştırır
     imageLabelling fonksiyonu içerisinden detectionFile,getGroundTruthVal,intersection_over_union,
     addedIouList fonksiyonları çalıştırılır ve gelen verilerle işlemler yapılır. 
     
@@ -585,8 +573,8 @@ def imageLabelling(image_file_path):
     
     iou = 0
    
-    # Ayni image ait annotation(ground-truth bounding boxes) bilgilerinin olduğu 
-    # txt dosyasını açıyoruz getGroundTruthVal fonksiyou ile
+    # Ayni image e ait annotation(ground-truth bounding boxes) bilgilerinin olduğu 
+    # txt dosyasını açıyoruz getGroundTruthVal fonksiyou ile ve ground-truth bounding boxes bilgilerini alıyoruz.
             
     content = image_file_path.split(".PNG")
     fileName = content[0]+".txt"
@@ -677,7 +665,7 @@ def imageLabelling(image_file_path):
         
         
         # Bir sonraki image oluşmuş ve değerleri alınmışsa 
-        # detectiondan veri gelmişse->predicted bounding boxes oluşmuşsa-> len(boxes_list )>0:   
+        # yani detectiondan veri gelmişse->predicted bounding boxes oluşmuşsa-> len(boxes_list )>0:   
         print("boxes_list: {}".format(boxes_list))
         print("nBox[0] : {}".format(nBox[0]))
         
@@ -700,20 +688,21 @@ def imageLabelling(image_file_path):
             cv2.putText(img,txt_label,(boxB[0]-50,boxB[1]-25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 255), 1)
             print("precision_label: {}".format(pr_label))
             
-            # intersection over union (iou) hesaplama ve değeri elde etme
+            # intersection over union (iou) hesaplama ve değeri elde etmek için fonksiyon çağırılıyor
             iou = intersection_over_union(boxA, boxB)
             print("iou : {}".format(iou))
             cv2.putText(img, "IoU: {:.4f}".format(iou), (10,30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255,0,0),1)
             print("{} IoU: {:.4f} ".format(image_file_path, iou))
             
-            # bütün resim dosyalarına ait değerleri, 
+            # detectiondan geçen image dosyalarına ait değerleri, 
             # mAP değerini hesaplamak için addedIouList fonksiyonuyla detection_List e ekliyoruz.   
             addedIouList(image_file_path, iou, int(truth_label_index), pr_label_id)
+            
         # nesne tespiti detectionda ve  groundtruth da bulunmuyorsa    
         elif len(boxes_list )<=0 and nBox[0]<0: 
             print("İmage de nesne algılanmadı. Ground truth box ve predict box değeri bulunmuyor")
             
-        # object detectionda bbox oluşmadı fakat ground truth box varsa 
+        # object detectionda predict bbox oluşmadı fakat ground truth box varsa 
         elif len(boxes_list )<=0 and nBox[0]>=0 :
             
             # ground-truth bounding boxes- > boxA
@@ -728,7 +717,7 @@ def imageLabelling(image_file_path):
             # mAP değerini hesaplamak için addedIouList fonksiyonuyla detection_List e ekliyoruz.   
             addedIouList(image_file_path, 0, int(truth_label_index), -1)
             
-        # object detectionda bbox oluştu fakat ground truth box yoksa
+        # object detectionda predict bbox oluştu fakat ground truth box yoksa
         elif len(boxes_list )>0 and nBox[0]<=-1: 
              # predicted bounding box -> boxB
             start_x, start_y, end_x, end_y, txt_label, pr_label_id = boxes_list  
@@ -758,7 +747,7 @@ def imageLabelling(image_file_path):
    Her image çalıştıktıkan sonra döngü içerisinde showMAP fonksiyonu çalışıyor ve fonksiyon 
    mAP(mean average precision) e ait 
    Recall, Precision ve F1 Score değerlerini çıktı olarak veriyor
-   Bütün resimler çalıştıktan sonra ecall, Precision ve F1 Score dğerlerini grafiksel gösterimi için
+   Bütün resimler çalıştıktan sonra ve döngü bittikten sonra Recall, Precision ve F1 Score değerlerini grafiksel gösterimi için
    showHistogram(histList) fonksiyonu çalışıyor.
    
     '''
