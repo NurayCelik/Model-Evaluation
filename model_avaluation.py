@@ -1,6 +1,7 @@
 '''
 Model Evaluation (Model Değerlendirmesi) 
 mAP(mean average precision)
+AP(average precision)
 intersection over union(iou)
 Recall
 Precision
@@ -226,13 +227,14 @@ def showMAP(mAPList=[]):
     gerçek RECALL, PRECISION, F1_SCORE değerlerini bulmak için toplandı.
     
     '''      
-        
+    # AP değerleri   
     for i in range(len(labels)):
         RECALL += sumRecall[i]
         PRECISION += sumPrecis[i]
         F1_SCORE += sum_F1_Score[i]
       
     '''
+    mAP değerleri
     RECALL, PRECISION, F1_SCORE değerlerinin net değerini bulmak için de 
     class dizisinin boyutuna bölündü
     '''  
