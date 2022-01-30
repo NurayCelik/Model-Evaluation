@@ -4,7 +4,7 @@ mAP(mean average precision)
 
 AP(average precision)
 
-Intersection Over Union(iou)
+IoU (Intersection Over Union)
 
 Recall
 
