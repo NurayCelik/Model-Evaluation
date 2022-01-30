@@ -1,10 +1,10 @@
 ### Model Evaluation (Model Değerlendirmesi) 
 
-mAP(mean average precision)
+mAP (Mean Average Precision)
 
-AP(average precision)
+AP (Average Precision)
 
-IoU(Intersection Over Union)
+IoU (Intersection Over Union)
 
 Recall
 
