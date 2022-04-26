@@ -24,7 +24,7 @@ thresh_iou = 0.5
 confidences_tresh = 0.25
 mAPList = []
 classCount = 6
-labels = ["cizik","gocuk", "ezilme","bukulme","boyahatasi","surtme"]
+labels = ["person","car"]
 histList = [] 
    
 
