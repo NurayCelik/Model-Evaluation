@@ -20,9 +20,9 @@ We add 0 to TP, FP, TN, FN, sumRecall , sumPrecis, sum_F1_Score arrays as their 
 
 Sample outputs after running the project:
 
-ground_label: bukulme
+ground_label: car
 
-precision_label: ezilme
+precision_label: person
 
 annotas/frame_000005.PNG IoU: 0.9483
 
