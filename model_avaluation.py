@@ -453,7 +453,7 @@ def detectionFile(img):
     
     img_blob = cv2.dnn.blobFromImage(img, 1/255, (608,608),(0, 0, 0),swapRB=True, crop=False)
     
-    model = cv2.dnn.readNetFromDarknet("model//yolo-obj.cfg","model//yolo-obj_last.weights")
+    model = cv2.dnn.readNetFromDarknet("obj.cfg","obj.weights")
     
     layers = model.getLayerNames()
     output_layer = [layers[layer[0]-1] for layer in model.getUnconnectedOutLayers()]
