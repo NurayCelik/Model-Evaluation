@@ -69,7 +69,7 @@ def mean_average_precision(detection_List = []):
 # Eger bir detection icin IoU>=0.5 ise True Positive (TP)
 # Eger bir detecion icin IoU<0.5 ise False Positive (FP)
 # Eger bir ground truth var detection yok ise False Negative (FN)
-# Eger bir detection var ground truth yok ise yine TN
+# Eger bir detection var ground truth yok ise yine True Negative (TN)
 # =============================================================================   
 
 
