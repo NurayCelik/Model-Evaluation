@@ -88,7 +88,7 @@ def mean_average_precision(detection_List = []):
     
     -> mean_average_precision fonksiyonun çalışması:
     detection_List den gelen iou değeri, predict(detect image) labelid(class id) ve ground truth labelid değerleri kıyaslanarak
-    TP, FP, FN hesaplandı. Bunun için class(label) -> (labels = ["cizik","gocuk", "ezilme","bukulme","boyahatasi","surtme"]) 
+    TP, FP, FN hesaplandı. Bunun için class(label) -> (labels = ["person","car","bicycle","laptop", "camera","phone"]) 
     sayısı kadar indise sahip TP, FP, TN, FN dizileri oluşturuldu.
     Bu örneğin TP dizisinde her bir indis class id yi temsil ediyor. 
     
